@@ -1,0 +1,413 @@
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://umpedrogallego.github.io/site/player.js"></script>
+    <title>Pedro Gallego</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=supreme@100,101,200,201,300,301,400,401,500,501,700,701,800,801&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #bebab0;
+            --text: #0f0f0f;
+            --border: #000;
+            --meta-color: #948a8d;
+            --meta2: #e5e2e3;
+            --font-site: 'Supreme', sans-serif;
+            /* Cálculo do alinhamento: margem do conteúdo centralizado + padding lateral */
+            --gal-padding: max(40px, calc((100vw - 1000px) / 2) + 80px);
+        }
+        
+        ::selection { background-color: var(--meta-color); color: var(--meta2); }
+        ::-moz-selection { background-color: var(--meta-color); color: var(--meta2); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: var(--font-site); background-color: var(--bg); color: var(--text); 
+            -webkit-font-smoothing: antialiased;
+            font-size: clamp(16px, 0.9vw + 13.1px, 24px);
+            letter-spacing: clamp(-0.8px, -0.06vw - 0.12px, -0.2px);
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 8px 40px 0px 38px; max-width: 1400px; width: 100%; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: baseline;
+            background: transparent; position: sticky; top: 0; z-index: 1; mix-blend-mode: difference;
+        }
+        header a { text-decoration: none; color: inherit; }
+        header h1 { 
+    font-size: 28px; 
+    font-weight: 400; 
+    letter-spacing: 0px; 
+    text-transform: uppercase;
+    margin-left: 1px;
+    /* Configuração do efeito de inversão */
+    color: #ddd; 
+
+    /* Removemos as transições de cor antigas */
+    transition: none; 
+    will-change: auto;
+    }
+        header nav { display: flex; gap: 20px; font-size: 16px; letter-spacing: 0px; font-weight: 400; text-transform: uppercase; color: #bebab0; }
+        header nav a { padding: 2px 4px;}
+        header nav a.active { font-weight: 600; }
+
+        #main-grid {
+            display: grid; grid-template-columns: repeat(12, 1fr);
+            gap: 120px 30px; padding: 100px 40px; max-width: 1400px; margin: 0 auto;
+            align-items: start;
+        }
+
+        .item-obra { position: relative; display: flex; flex-direction: column; cursor: pointer; }
+        
+        .slot-1 { grid-column: span 5; margin-top: 0px; }
+        .slot-2 { grid-column: span 4; margin-top: 60px; }
+        .slot-3 { grid-column: span 3; margin-top: 100px; }
+        .slot-4 { grid-column: span 5; margin-top: 30px; }
+        .slot-5 { grid-column: span 7; margin-top: 80px; }
+
+        .img-box { width: 100%; display: flex; align-items: flex-start;}
+        .img-box img, .img-box video { width: 100%; height: auto; display: block; object-fit: contain; }
+
+        .meta { padding: 4px 4px 24px 16px; background: var(--bg); z-index: 2000; opacity: 0.94; }
+        .meta strong { font-weight: 400; font-size: 16px; color: var(--text); display: block; letter-spacing:0.12px; }
+
+        /* --- GALERIA V15 (FULL-BLEED) --- */
+.galeria-container {
+    grid-column: 1 / -1;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%); /* Força o breakout do grid */
+    padding: 40px 0;
+    display: none;
+    flex-direction: column;
+    gap: 40px;
+    background: var(--bg);
+    margin-top: -112px;
+    margin-bottom: -60px;
+}
+
+.galeria-media-wrapper {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    margin-bottom: -40px;
+    margin-top: 8px;
+    scroll-behavior: smooth;
+    /* Alinha o início da primeira imagem com a ficha técnica */
+    padding-left: var(--gal-padding);
+}
+
+        /* Spacer invisível permite que a última imagem respire na borda direita */
+.galeria-media-wrapper::after {
+    content: "";
+    flex: 0 0 var(--gal-padding);
+    height: 1px;
+}
+
+/* Força imagens, vídeos e o player a manterem seu tamanho original sem empilhar */
+.galeria-media-wrapper img, 
+.galeria-media-wrapper video, 
+devart-player { 
+    height: 60vh; 
+    width: auto; 
+    display: block; 
+    flex-shrink: 0; /* IMPEDE O EMPILHAMENTO */
+}
+
+devart-player {
+    height: 60vh;    /* Mesma altura das imagens */
+    width: auto;     /* Largura baseada no conteúdo */
+    display: block;
+    flex-shrink: 0;  /* Impede que o flexbox esmague o vídeo */
+}
+         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+   
+        .galeria-media-wrapper::-webkit-scrollbar { display: none; }
+
+        .serie-nav { display: flex; gap: 10px; font-size: 12px; margin-bottom: 10px; }
+        .serie-nav button { 
+            background: none; border: none; font-family: inherit; cursor: pointer; 
+            padding: 0; color: var(--text); opacity: 0.4; transition: 0.2s;
+        }
+        .serie-nav button:hover, .serie-nav button.active { opacity: 1; font-weight: 800; }
+
+        .ficha-tecnica-wrap { width: 100%; max-width: 840px; margin: 0 auto; padding: 0; }
+        .ficha-tecnica { width: 100%; line-height: 1.6; position: relative; background: var(--bg);}
+        .ficha-tecnica b { font-weight: 500; }
+        .ficha-tecnica .primary { font-size: 20px; margin-top: 16px; letter-spacing: 1.2;}
+        .ficha-tecnica .secondary { font-size: 16px; letter-spacing: 1.2; }
+        .ficha-tecnica .extra { font-size: 16px; letter-spacing: 1.2; }
+ 
+        .sobre-container {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            gap: 30px; margin-left: -1px; margin-top: 20px; margin-bottom:20px; max-width: 840px;
+        }
+
+        .sobre-box { 
+            flex: 1; max-width: 840px; font-size: 16px; letter-spacing: 1.2; line-height: 1.4; 
+            text-align: left; white-space: pre-line; margin-top: -20px; padding-top: 0; border-top: none;
+        }
+
+        .btn-leia { 
+            flex-shrink: 0; display: block; margin-left: auto;
+            background: none; color: var(--meta-color); border: none;
+            font-family: inherit; font-size: 20px; font-weight: 400; cursor: pointer;
+            text-decoration: none; padding: 4px 12px; margin: 8px;
+        }
+
+        .btn-leia:hover { color: var(--text); }
+
+        @media (max-width: 768px) {
+            #main-grid { display: flex; flex-direction: column; padding: 20px; }
+            .item-obra { width: 100% !important; margin-top: 0 !important; }
+            .galeria-container { width: 100%; margin-left: 0; }
+            .ficha-tecnica-wrap { padding: 0 40px; }
+            .galeria-media-wrapper { padding-left: 20px; }
+            .galeria-media-wrapper::after { flex: 0 0 20px; }
+        }
+    </style>
+</head>
+<body onclick="closeAllGalleries(event)">
+
+<header id="site-header">
+    <a href="index.html"><h1>Pedro Gallego</h1></a>
+    <nav>
+        <a href="index.html" class="active">obras</a>
+        <a href="cv.html">cv</a>
+        <a href="info.html">info</a>
+    </nav>
+</header>
+
+<main id="main-grid"></main>
+
+<script>
+    const URL_JSON = "https://umpedrogallego.github.io/site/json/trabalhos.json";
+    const THUMB_BASE = "https://umpedrogallego.github.io/site/thumb/";
+    const MIDIA_BASE = "https://umpedrogallego.github.io/site/midia/";
+    const PLAYER_BASE = "https://umpedrogallego.github.io/site/player/";
+
+    const slotSpans = [5, 4, 3, 5, 7];
+    const slotClasses = ['slot-1', 'slot-2', 'slot-3', 'slot-4', 'slot-5'];
+
+    let fullData = [];
+    let gridWorks = [];
+    let currentOpenID = null;
+
+    async function init() {
+        try {
+            const res = await fetch(URL_JSON);
+            const data = await res.json();
+            
+            fullData = data.filter(w => w.DESTAQUE !== 'N' && w.INCLUIR !== "");
+            fullData.sort((a, b) => parseInt(a.DESTAQUE) - parseInt(b.DESTAQUE));
+
+            const seenSeries = new Set();
+            gridWorks = fullData.filter(obra => {
+                if (obra.SERIE && obra.SERIE.trim() !== "") {
+                    if (seenSeries.has(obra.SERIE)) return false;
+                    seenSeries.add(obra.SERIE);
+                    return true;
+                }
+                return true;
+            });
+            renderGrid();
+        } catch(e) { console.error("Erro no carregamento:", e); }
+    }
+
+    function renderGrid() {
+        const grid = document.getElementById('main-grid');
+        grid.innerHTML = gridWorks.map((obra, i) => {
+            const slotIdx = obra.SLOT ? (parseInt(obra.SLOT) - 1) : (i % 5);
+            const ratio = (obra.W && obra.H) ? `style="aspect-ratio: ${obra.W} / ${obra.H}"` : '';
+            
+            let media = (obra.MIDIA && obra.MIDIA.length > 2) ? 
+                `<video muted loop playsinline autoplay><source src="${MIDIA_BASE}${obra.ID}a.${obra.MIDIA}" type="video/mp4"></video>` :
+                `<img src="${THUMB_BASE}${obra.ID}a.avif" loading="lazy">`;
+
+            return `
+                <article class="item-obra ${slotClasses[slotIdx]}" id="anchor-${obra.ID}" onclick="handleWorkClick('${obra.ID}', event)">
+                    <div class="img-box" ${ratio}>${media}</div>
+                    <div class="meta"><strong>${obra.SERIE || obra.TITULO}</strong></div>
+                </article>
+            `;
+        }).join('');
+    }
+
+    function handleWorkClick(id, e) {
+        e.stopPropagation();
+        if (currentOpenID === id) { closeGallery(); return; }
+        if (currentOpenID) closeGallery();
+        openGallery(id);
+    }
+
+    function openGallery(id) {
+        currentOpenID = id;
+        const mainObra = gridWorks.find(o => o.ID === id);
+        const serieObras = mainObra.SERIE ? fullData.filter(o => o.SERIE === mainObra.SERIE) : [mainObra];
+
+        let currentSum = 0;
+        let anchorID = id;
+        const targetIdx = gridWorks.findIndex(o => o.ID === id);
+        for (let i = 0; i < gridWorks.length; i++) {
+            const span = slotSpans[gridWorks[i].SLOT ? parseInt(gridWorks[i].SLOT)-1 : i%5];
+            currentSum += span;
+            if (i >= targetIdx && currentSum % 12 === 0) {
+                anchorID = gridWorks[i].ID;
+                break;
+            }
+            if (i === gridWorks.length - 1) anchorID = gridWorks[i].ID;
+        }
+
+        const anchorEl = document.getElementById(`anchor-${anchorID}`);
+        const galContainer = document.createElement('div');
+        galContainer.className = 'galeria-container';
+        galContainer.id = 'active-gallery';
+        galContainer.style.display = 'flex';
+        
+        galContainer.innerHTML = buildGalleryHTML(serieObras);
+        anchorEl.after(galContainer);
+
+        const headerH = document.getElementById('site-header').offsetHeight;
+        const galTop = galContainer.getBoundingClientRect().top + window.pageYOffset + 40;
+        window.scrollTo({ top: galTop - headerH, behavior: 'smooth' });
+    }
+
+function buildGalleryHTML(obras) {
+    let mediaHtml = "";
+    const ref = obras[0]; 
+    const hasPlayer = ref.PLAYER && ref.PLAYER.trim() !== "";
+
+    // 1. Inserção do PLAYER (Prioridade Máxima)
+    if (hasPlayer) {
+        mediaHtml += `<devart-player src="${PLAYER_BASE}${ref.ID}play.mp4" poster="${PLAYER_BASE}${ref.ID}pc.avif" style="margin-right: 20px;"></devart-player>`;
+    }
+
+    // 2. Processamento das Mídias
+    obras.forEach((o) => {
+        const obraID_DOM = `media-${o.ID}`;
+        const count = parseInt(o.IMG_COUNT) || 1;
+        let workMediaList = []; // Lista temporária para permitir a inversão
+
+        const isMidiaVideo = (o.MIDIA && o.MIDIA.length > 2);
+
+        // REGRA DE VÍDEO ÚNICO: Se tem PLAYER, ignoramos o vídeo da MIDIA na galeria
+        if (hasPlayer && isMidiaVideo) {
+            // Não adiciona nada para o arquivo 'a' (que seria o vídeo MIDIA)
+        } else if (isMidiaVideo) {
+            // Se NÃO tem PLAYER, o vídeo MIDIA aparece normalmente
+            workMediaList.push(`<video id="${obraID_DOM}" muted loop playsinline autoplay><source src="${MIDIA_BASE}${o.ID}a.${o.MIDIA}" type="video/mp4"></video>`);
+        } else {
+            // Caso padrão: Imagem 'a'
+            workMediaList.push(`<img id="${obraID_DOM}" src="${THUMB_BASE}${o.ID}a.avif">`);
+        }
+
+        // Adiciona mídias extras (b, c, d...)
+        const letters = ['b', 'c', 'd', 'e', 'f', 'g'];
+        for (let j = 0; j < count - 1; j++) {
+            workMediaList.push(`<img src="${THUMB_BASE}${o.ID}${letters[j]}.avif">`);
+        }
+
+        // REGRA DE INVERSÃO: Se a galeria tem PLAYER, inverte a ordem (c, b, a)
+        if (hasPlayer) {
+            workMediaList.reverse();
+        }
+
+        // Junta as mídias da obra atual na string principal
+        mediaHtml += workMediaList.join("");
+    });
+
+    const sobre = ref.SOBRE || "";
+    const brIdx = sobre.indexOf('<br>');
+    const hasMore = brIdx !== -1;
+    const preview = hasMore ? sobre.substring(0, brIdx) : sobre;
+    const full = hasMore ? sobre.substring(brIdx).replace(/^(<br\s*\/?>)+/i, '') : "";
+
+    const evitarViuva = (texto) => {
+        if (!texto) return "";
+        const palavras = texto.trim().split(" ");
+        if (palavras.length < 4) return texto;
+        const ultima = palavras.pop();
+        const penultima = palavras.pop();
+        return palavras.join(" ") + " " + penultima + "\u00A0" + ultima;
+    };
+
+    let menuHtml = obras.length > 1 ? `<div class="serie-nav">` : "";
+    if (obras.length > 1) {
+        obras.forEach((o, idx) => {
+            menuHtml += `<button onclick="scrollToMedia('media-${o.ID}', this)">[${String(idx+1).padStart(2,'0')}]</button>`;
+        });
+        menuHtml += `</div>`;
+    }
+
+    return `
+        <div class="galeria-media-wrapper" id="gal-scroll">
+            ${mediaHtml}
+        </div>
+        <div class="ficha-tecnica-wrap">
+            ${menuHtml}
+            <div class="ficha-tecnica">
+                <div class="primary"><b>${ref.TITULO}</b>, ${ref.ANO}</div>
+                <div class="secondary">${ref.TECNICA}, ${ref.DIMENSAO}</div>
+                <div class="sobre-container">
+                    <div class="sobre-box">
+                        <span id="txt-preview">${evitarViuva(preview)}</span>
+                        <span id="more-text" style="display:none;"><br>${evitarViuva(full)}</span>
+                    </div>
+                    ${hasMore ? `<button class="btn-leia" onclick="expandAbout(this)">[ … ]</button>` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function scrollToMedia(id, btn) {
+        event.stopPropagation();
+        const el = document.getElementById(id);
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        const btns = btn.parentNode.querySelectorAll('button');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    function expandAbout(btn) {
+        event.stopPropagation();
+        const moreText = document.getElementById('more-text');
+        if (moreText.style.display === 'none' || moreText.style.display === '') {
+            moreText.style.display = 'inline';
+            btn.innerText = '[ x ]';
+        } else {
+            moreText.style.display = 'none';
+            btn.innerText = '[ … ]';
+        }
+    }
+
+    function closeGallery() {
+    const gal = document.getElementById('active-gallery');
+    if (gal) {
+        // Limpar o conteúdo antes de remover garante que o player de vídeo pare o som imediatamente
+        gal.innerHTML = ""; 
+        gal.remove();
+    }
+    currentOpenID = null;
+}
+    function closeAllGalleries(e) {
+        if (currentOpenID && !e.target.closest('.galeria-container') && !e.target.closest('.item-obra')) {
+            closeGallery();
+        }
+    }
+
+    window.addEventListener('keydown', (e) => { if (e.key === "Escape") closeGallery(); });
+    
+    
+    init();
+</script>
+
+</body>
+</html>
