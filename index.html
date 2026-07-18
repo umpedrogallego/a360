@@ -5,166 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACAPULCO | Portfólio | Pedro Gallego</title>
 
-    <!-- Fonte: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-color: #3a3d3a;
-            --text-color: #c8d0c8;
-            --link-color: #79e279;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+    <style>:root {
+    --bg-color: #3a3d3a;
+    --text-color: #c8d0c8;
+    --link-color: #79e279;
+    --font-family: 'Plus Jakarta Sans', sans-serif;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-family);
-            margin: 0;
-            padding: 40px 20px;
-            line-height: 1.6;
-        }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0; /* Zera o padding do topo para a imagem colar na margem superior */
+    line-height: 1.6;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.container {
+    width: 96%; /* Ocupa 98% da tela */
+    max-width: none;
+    margin: 0 auto; /* O auto distribui o 1% restante igualmente nas laterais */
+    padding-bottom: 40px; /* Mantém um respiro na parte inferior da página */
+}
 
-        /* Tipografia */
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 400;
-            margin: 0;
-            letter-spacing: 2px;
-        }
+/* Tipografia */
+h1 {
+    font-size: 3.5rem;
+    font-weight: 700; /* Weight 700 conforme solicitado */
+    margin: 0;
+    letter-spacing: 2px;
+}
 
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+h2 {
+    font-size: 1.5rem;
+    font-weight: 500; /* Weight 500 conforme solicitado */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        p {
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
+p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
 
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-block;
-            margin: 10px 0;
-        }
+a {
+    color: var(--link-color);
+    text-decoration: underline; /* Link sublinhado por padrão */
+    font-size: 0.9rem;
+    display: inline-block;
+    margin: 10px 0;
+}
 
-        a:hover {
-            text-decoration: underline;
-        }
+a:hover {
+    text-decoration: none; /* Perde o sublinhado ao passar o mouse */
+}
 
-        /* Imagens Base */
-        img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+/* Imagens Base */
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
-        .hero-image {
-            margin-bottom: 40px;
-        }
+.hero-image {
+    margin-bottom: 40px;
+    /* Fica colada no topo pois o body agora tem padding e margin zerados no topo */
+}
 
-        /* Layout Grid */
-        .intro-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 60px;
-        }
+/* Layout Grid */
+.intro-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+}
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
 
-        /* Seção Instalação (Imagens lado a lado) */
-        .install-images {
-            display: grid;
-            grid-template-columns: 1fr 2fr; /* Proporção aproximada do mockup para o convite vs foto da instalação */
-            gap: 15px;
-            margin-bottom: 15px;
-            align-items: start;
-        }
+/* Seção Instalação (Imagens lado a lado) */
+.install-images {
+    display: grid;
+    grid-template-columns: 1fr 2fr; 
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: start;
+}
 
-        .col-image {
-            margin-bottom: 20px;
-        }
+.col-image {
+    margin-bottom: 20px;
+}
 
-        /* Efeito de Cursor para imagens clicáveis */
-        .lightbox-trigger {
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
+/* Efeito de Cursor para imagens clicáveis */
+.lightbox-trigger {
+    cursor: zoom-in; /* Cursor de lupa com sinal de + */
+    transition: opacity 0.3s ease;
+}
 
-        .lightbox-trigger:hover {
-            opacity: 0.8;
-        }
+.lightbox-trigger:hover {
+    opacity: 0.8;
+}
 
-        /* Lightbox (Modal) */
-        .lightbox-overlay {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+/* Lightbox (Modal) */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-        .lightbox-overlay.active {
-            display: flex;
-        }
+.lightbox-overlay.active {
+    display: flex;
+}
 
-        .lightbox-img {
-            max-width: 90%;
-            max-height: 90vh;
-            width: auto;
-            object-fit: contain;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
+.lightbox-img {
+    max-width: 90%;
+    max-height: 90vh;
+    width: auto;
+    object-fit: contain;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
 
-        .lightbox-close {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-        }
+.lightbox-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
 
-        /* Responsividade para telas menores */
-        @media (max-width: 768px) {
-            .intro-section, .main-content {
-                grid-template-columns: 1fr;
-            }
-            .install-images {
-                grid-template-columns: 1fr;
-            }
-            h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .intro-section, .main-content {
+        grid-template-columns: 1fr;
+    }
+    .install-images {
+        grid-template-columns: 1fr;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+</style>
 </head>
 <body>
 
@@ -191,8 +192,12 @@
                 <h2>LONGA-METRAGEM</h2>
                 <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still1.jpg" alt="Still Acapulco 1" class="col-image lightbox-trigger">
                 
+                <br>
+                <a href="http://www.mac.usp.br/mac/conteudo/academico/arquivo/2024/84.asp" target="_blank">&gt; Exibição no MAC USP, São Paulo</a>
+                <br>
+                <a href="https://www.leuphana.de/en/research-centers/lias/news/events/single-view/2025/02/12/lias-film-series-acapulco.html" target="_blank">&gt; Exibição no SCALA Arthouse Cinema, Luneburgo</a>
+                <br>
                 <a href="https://collegium.ethz.ch/events/fellow-year-2023-2024/acapulco" target="_blank">&gt; Exibição no Kino Toni, Zurique</a>
-                
                 <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_Collegium.jpg" alt="Exibição Collegium" class="col-image lightbox-trigger" style="margin-top: 10px;">
             </div>
 
