@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACAPULCO | Portfólio | Pedro Gallego</title>
+    <title>ACAPULCO - Portfólio</title>
 
+    <!-- Fonte: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -26,10 +27,9 @@ body {
 }
 
 .container {
-    width: 96%; /* Ocupa 98% da tela */
+    width: 100%; 
     max-width: none;
-    margin: 0 auto; /* O auto distribui o 1% restante igualmente nas laterais */
-    padding-bottom: 40px; /* Mantém um respiro na parte inferior da página */
+    padding-bottom: 40px;
 }
 
 /* Tipografia */
@@ -73,19 +73,22 @@ img {
 }
 
 .hero-image {
-    margin-bottom: 40px;
-    /* Fica colada no topo pois o body agora tem padding e margin zerados no topo */
+    width: 96%;
+    margin: 0 auto 40px auto; /* O 'auto' nas laterais centraliza a imagem */
 }
 
 /* Layout Grid */
 .intro-section {
+    width: 90%;
+    margin: 0 auto 60px auto; /* Centraliza e mantém os 60px de espaço abaixo */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    margin-bottom: 60px;
 }
 
 .main-content {
+    width: 90%;
+    margin: 0 auto; /* Centraliza o bloco na tela */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
