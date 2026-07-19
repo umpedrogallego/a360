@@ -3,252 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACAPULCO - Portfólio</title>
+    <title>PORTFÓLIO | PEDRO GALLEGO</title>
 
     <!-- Fonte: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <style>:root {
-    --bg-color: #3a3d3a;
-    --text-color: #c8d0c8;
-    --link-color: #79e279;
-    --font-family: 'Plus Jakarta Sans', sans-serif;
-}
+    <style>
+        :root {
+            --bg-color: #3a3d3a;
+            --text-color: #c8d0c8;
+            --link-color: #79e279;
+            --font-family: 'Plus Jakarta Sans', sans-serif;
+            --nav-bg: #1b1c1b;
+            --nav-hover: #2d302d;
+            --nav-border: #333633;
+        }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-family);
-    margin: 0;
-    padding: 0; /* Zera o padding do topo para a imagem colar na margem superior */
-    line-height: 1.6;
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
 
-.container {
-    width: 100%; 
-    max-width: none;
-    padding-bottom: 40px;
-}
+        .container {
+            width: 100%; 
+            max-width: none;
+            padding-bottom: 120px; /* Espaço para o menu fixo */
+            padding-top: 50px; 
+        }
 
-/* Tipografia */
-h1 {
-    font-size: 3.5rem;
-    font-weight: 700; /* Weight 700 conforme solicitado */
-    margin: 0;
-    letter-spacing: 2px;
-}
+        /* Tipografia Base */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: 500; /* Weight 500 conforme solicitado */
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+        /* Cabeçalho do Topo */
+        .top-header {
+            width: 90%;
+            margin: 0 auto 80px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
 
-p {
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-}
+        /* Lista de Projetos (Alternada) */
+        .portfolio-list {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 80px; /* Espaçamento entre os projetos */
+        }
 
-a {
-    color: var(--link-color);
-    text-decoration: underline; /* Link sublinhado por padrão */
-    font-size: 0.9rem;
-    display: inline-block;
-    margin: 10px 0;
-}
+        .portfolio-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: opacity 0.3s ease;
+        }
 
-a:hover {
-    text-decoration: none; /* Perde o sublinhado ao passar o mouse */
-}
+        .portfolio-row:hover {
+            opacity: 0.7;
+            text-decoration: none;
+        }
 
-/* Imagens Base */
-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
+        .portfolio-row img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Sombras removidas conforme solicitado */
+        }
 
-.hero-image {
-    width: 96%;
-    margin: 0 auto 40px auto; /* O 'auto' nas laterais centraliza a imagem */
-}
+        /* Lógica da inversão de lados (Padrão: Título Esquerda, Imagem Direita) */
+        .row-title {
+            order: 1;
+            
+        }
+        .row-image {
+            order: 2;
+        }
 
-/* Layout Grid */
-.intro-section {
-    width: 90%;
-    margin: 0 auto 60px auto; /* Centraliza e mantém os 60px de espaço abaixo */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
+        /* Inversão para as linhas pares (Imagem Esquerda, Título Direita) */
+        .portfolio-row.reverse .row-title {
+            order: 2;
+        }
+        .portfolio-row.reverse .row-image {
+            order: 1;
+        }
 
-.main-content {
-    width: 90%;
-    margin: 0 auto; /* Centraliza o bloco na tela */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
+        /* Menu Inferior Fixo */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 4%;
+            box-sizing: border-box;
+            z-index: 900;
+            font-size: 0.8rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
 
-/* Seção Instalação (Imagens lado a lado) */
-.install-images {
-    display: grid;
-    grid-template-columns: 1fr 2fr; 
-    gap: 15px;
-    margin-bottom: 15px;
-    align-items: start;
-}
+        .bottom-nav a {
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            display: inline-block;
+            border-radius: 4px;
+        }
 
-.col-image {
-    margin-bottom: 20px;
-}
+        .nav-left a {
+            font-weight: 700;
+            color: #e0e5e0;
+            padding: 8px 12px;
+        }
 
-/* Efeito de Cursor para imagens clicáveis */
-.lightbox-trigger {
-    cursor: zoom-in; /* Cursor de lupa com sinal de + */
-    transition: opacity 0.3s ease;
-}
+        .nav-left a:hover {
+            background-color: var(--nav-hover);
+            color: #fff;
+        }
 
-.lightbox-trigger:hover {
-    opacity: 0.8;
-}
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
 
-/* Lightbox (Modal) */
-.lightbox-overlay {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-}
+        .nav-right a {
+            font-weight: 400;
+            color: #939b93;
+            padding: 8px 16px;
+            border-left: 1px solid var(--nav-border);
+            border-radius: 0;
+        }
+        
+        .nav-right a:first-child {
+            border-left: none;
+        }
 
-.lightbox-overlay.active {
-    display: flex;
-}
+        .nav-right a:hover {
+            background-color: var(--nav-hover);
+            color: #fff;
+            border-radius: 4px;
+        }
 
-.lightbox-img {
-    max-width: 90%;
-    max-height: 90vh;
-    width: auto;
-    object-fit: contain;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .bottom-nav {
+                flex-direction: column;
+                gap: 5px;
+                padding: 12px 2%;
+            }
+            .nav-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-right a {
+                border-left: none;
+                padding: 6px 10px;
+            }
+        }
 
-.lightbox-close {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-    .intro-section, .main-content {
-        grid-template-columns: 1fr;
-    }
-    .install-images {
-        grid-template-columns: 1fr;
-    }
-    h1 {
-        font-size: 2.5rem;
-    }
-}
-</style>
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 50px;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+            .portfolio-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            /* No celular, forçamos o título a vir sempre primeiro para uma leitura lógica */
+            .portfolio-row .row-title,
+            .portfolio-row.reverse .row-title {
+                order: 1;
+            }
+            .portfolio-row .row-image,
+            .portfolio-row.reverse .row-image {
+                order: 2;
+            }
+            .portfolio-list {
+                gap: 60px;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Imagem do topo (sem lightbox) -->
-        <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still2.jpg" alt="Acapulco Top Banner" class="hero-image">
-
-        <!-- Seção de Introdução -->
-        <div class="intro-section">
-            <div class="intro-title">
-                <h1>ACAPULCO</h1>
-            </div>
-            <div class="intro-text">
-                <p>Co-direção, edição de vídeo e som do documentário Acapulco (2024, 75min).</p>
-                <p>O filme, em parceria com Bruno Moreschi, trata das relações de microtrabalho em torno de bancos de imagens usadas para o treinamento de visão computacional.</p>
-                <p>O documentário também se desdobra em uma versão expositiva em 3 canais, com duração de 17 minutos, comissionada para a exposição <em>O Mundo Através da IA</em>, curada por Antonio Somaini, resultante de uma parceria entre SESC e o centro de arte francês Jeu de Paume.</p>
-            </div>
+        
+        <!-- Cabeçalho (PORTFÓLIO | PEDRO GALLEGO) -->
+        <div class="top-header" style="font-weight: 800; color:#79e279;">
+            <h1>PORTFÓLIO</h1>
+            <h1>PEDRO GALLEGO</h1>
         </div>
 
-        <!-- Colunas Principais -->
-        <div class="main-content">
-            <!-- Coluna Esquerda: Longa-Metragem -->
-            <div class="column">
-                <h2>LONGA-METRAGEM</h2>
-                <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still1.jpg" alt="Still Acapulco 1" class="col-image lightbox-trigger">
-                
-                <br>
-                <a href="http://www.mac.usp.br/mac/conteudo/academico/arquivo/2024/84.asp" target="_blank">&gt; Exibição no MAC USP, São Paulo</a>
-                <br>
-                <a href="https://www.leuphana.de/en/research-centers/lias/news/events/single-view/2025/02/12/lias-film-series-acapulco.html" target="_blank">&gt; Exibição no SCALA Arthouse Cinema, Luneburgo</a>
-                <br>
-                <a href="https://collegium.ethz.ch/events/fellow-year-2023-2024/acapulco" target="_blank">&gt; Exibição no Kino Toni, Zurique</a>
-                <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_Collegium.jpg" alt="Exibição Collegium" class="col-image lightbox-trigger" style="margin-top: 10px;">
-            </div>
-
-            <!-- Coluna Direita: Instalação -->
-            <div class="column">
-                <h2>INSTALAÇÃO</h2>
-                <div class="install-images">
-                    <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_SESC_convite.jpg" alt="Convite Sesc" class="lightbox-trigger">
-                    <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_SESC.jpg" alt="Instalação Sesc" class="lightbox-trigger">
+        <!-- Lista de Trabalhos Alternada -->
+        <div class="portfolio-list">
+            
+            <!-- Linha 1: Título Esquerda | Imagem Direita -->
+            <a href="https://umpedrogallego.github.io/a360/acapulco.html" class="portfolio-row">
+                <div class="row-title">
+                    <h1 style="font-weight: 600;">ACAPULCO</h1>
                 </div>
-                <p style="margin-bottom: 5px; font-size: 0.9rem;">Videoinstalação em 3 canais, 17min</p>
-                <a href="https://www.sescsp.org.br/editorial/o-mundo-atraves-da-ia/" target="_blank">&gt; Chega ao Sesc Campinas a mostra internacional O Mundo Através da IA</a>
-            </div>
+                <div class="row-image">
+                    <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still2.jpg" alt="Acapulco">
+                </div>
+            </a>
+
+            <!-- Linha 2: Imagem Esquerda | Título Direita (Uso da classe 'reverse') -->
+            <a href="https://umpedrogallego.github.io/a360/vev.html" class="portfolio-row reverse">
+                <div class="row-title">
+                    <h1 style="font-weight: 600;">VAI E VEM</h1>
+                </div>
+                <div class="row-image">
+                    <img src="https://umpedrogallego.github.io/a360/img/vev01.jpg" alt="Vai e Vem">
+                </div>
+            </a>
+
+            <!-- Linha 3: Título Esquerda | Imagem Direita -->
+            <a href="https://umpedrogallego.github.io/a360/osalto.html" class="portfolio-row">
+                <div class="row-title">
+                    <h1 style="font-weight: 600;">O SALTO</h1>
+                </div>
+                <div class="row-image">
+                    <img src="https://umpedrogallego.github.io/a360/img/osalto0.jpg" alt="O Salto">
+                </div>
+            </a>
+
+            <!-- Linha 4: Imagem Esquerda | Título Direita (Uso da classe 'reverse') -->
+            <a href="https://umpedrogallego.github.io/a360/fmf.html" class="portfolio-row reverse">
+                <div class="row-title">
+                    <h1 style="font-weight: 600;">FUTURO MOVIMENTO FUTURO:<br>REPROVADO</h1>
+                </div>
+                <div class="row-image">
+                    <img src="https://umpedrogallego.github.io/a360/img/fmf02.jpg" alt="Futuro Movimento Futuro: Reprovado">
+                </div>
+            </a>
+
         </div>
     </div>
 
-    <!-- Estrutura do Lightbox -->
-    <div class="lightbox-overlay" id="lightbox">
-        <span class="lightbox-close" id="lightbox-close">&times;</span>
-        <img class="lightbox-img" id="lightbox-image" src="" alt="Ampliada">
-    </div>
+    <!-- Menu Rodapé -->
+    <nav class="bottom-nav">
+        <div class="nav-left">
+            <a href="https://umpedrogallego.github.io/a360/index.html">PORTFÓLIO | PEDRO GALLEGO</a>
+        </div>
+        <div class="nav-right">
+            <a href="https://umpedrogallego.github.io/a360/acapulco.html">ACAPULCO</a>
+            <a href="https://umpedrogallego.github.io/a360/vev.html">VAI E VEM</a>
+            <a href="https://umpedrogallego.github.io/a360/osalto.html">O SALTO</a>
+            <a href="https://umpedrogallego.github.io/a360/fmf.html">FUTURO MOVIMENTO FUTURO: REPROVADO</a>
+        </div>
+    </nav>
 
-    <!-- Script de Controle do Lightbox -->
-    <script>
-        const triggers = document.querySelectorAll('.lightbox-trigger');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImage = document.getElementById('lightbox-image');
-        const closeBtn = document.getElementById('lightbox-close');
-
-        // Abre o lightbox ao clicar nas imagens autorizadas
-        triggers.forEach(trigger => {
-            trigger.addEventListener('click', function() {
-                lightboxImage.src = this.src; // Pega o link da imagem clicada
-                lightbox.classList.add('active');
-            });
-        });
-
-        // Fecha pelo botão 'X'
-        closeBtn.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-        });
-
-        // Fecha ao clicar fora da imagem (no fundo escuro)
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-            }
-        });
-    </script>
 </body>
 </html>
