@@ -35,54 +35,56 @@
         .container {
             width: 100%; 
             max-width: none;
-            padding-bottom: 150px; /* Respiro extra para o nav fixo */
+            padding-bottom: 180px; /* Respiro extra para o nav fixo e para o grid defasado */
             padding-top: 50px; 
         }
 
         /* --- CABEÇALHO --- */
         .top-header {
             width: 90%;
-            margin: 0 auto 100px auto; /* Afasta o cabeçalho do conteúdo */
+            margin: 0 auto 80px auto;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
         }
 
         .top-header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: var(--brand-color); /* Mantém o peso e a cor da marca */
+            color: var(--brand-color);
             margin: 0;
             letter-spacing: 2px;
             line-height: 1;
         }
 
-        /* --- GRID EDITORIAL ASSIMÉTRICO --- */
+        /* --- GRID DEFASADO (STAGGERED GRID) --- */
         .editorial-gallery {
             width: 90%;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Duas colunas de tamanhos iguais */
+            column-gap: 5%; /* Espaço horizontal entre colunas */
+            row-gap: 80px; /* Espaço vertical entre as linhas */
+            align-items: start;
         }
 
         .portfolio-item {
             display: block;
             text-decoration: none;
             color: var(--text-color);
-            margin-bottom: 120px; /* Grande respiro vertical entre obras */
+            width: 100%;
         }
 
-        /* Ritmo do Layout: Cada item ocupa um espaço diferente na tela */
-        .portfolio-item:nth-child(1) { width: 75%; margin-left: 0; }
-        .portfolio-item:nth-child(2) { width: 65%; margin-left: auto; }
-        .portfolio-item:nth-child(3) { width: 85%; margin: 0 auto; }
-        .portfolio-item:nth-child(4) { width: 70%; margin-left: 5%; }
+        /* O "pulo do gato" para o zigzag: empurramos os itens pares (coluna da direita) para baixo */
+        .portfolio-item:nth-child(even) {
+            transform: translateY(120px);
+        }
 
-        /* Estrutura da Imagem com efeito Parallax/Scale */
+        /* Estrutura da Imagem com efeito Hover */
         .image-wrapper {
             width: 100%;
             overflow: hidden;
-            background-color: #222; /* Placeholder enquanto carrega */
+            background-color: #2a2d2a;
         }
 
         .image-wrapper img {
@@ -90,21 +92,21 @@
             height: auto;
             display: block;
             transform: scale(1.01);
-            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .portfolio-item:hover .image-wrapper img {
             transform: scale(1.04);
         }
 
-        /* Ficha Técnica Minimalista (Abaixo da imagem) */
+        /* Ficha Técnica Minimalista */
         .project-meta {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-top: 20px;
+            margin-top: 15px;
             border-top: 1px solid var(--border-color);
-            padding-top: 20px;
+            padding-top: 15px;
             transition: opacity 0.3s ease;
         }
 
@@ -113,22 +115,21 @@
         }
 
         .project-number {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--brand-color);
             letter-spacing: 1px;
         }
 
         .project-title {
-            font-size: 2.2rem;
+            font-size: 1.3rem; /* Reduzido para ficar elegante em 2 colunas */
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 1px;
-            line-height: 1.1;
+            line-height: 1.2;
             text-align: right;
-            max-width: 70%;
+            max-width: 80%;
         }
-
 
         /* --- MENU INFERIOR FIXO --- */
         .bottom-nav {
@@ -205,23 +206,26 @@
                 border-left: none;
                 padding: 6px 10px;
             }
-            
-            /* Normaliza o ritmo do grid para telas médias */
-            .portfolio-item:nth-child(n) { 
-                width: 100%; 
-                margin-left: 0; 
-                margin-bottom: 80px; 
+            .container {
+                padding-bottom: 220px;
             }
         }
 
         @media (max-width: 768px) {
             .top-header {
                 flex-direction: column;
-                gap: 10px;
-                margin-bottom: 60px;
+                gap: 5px;
+                margin-bottom: 50px;
             }
             .top-header h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            .editorial-gallery {
+                grid-template-columns: 1fr; /* Volta a ser 1 coluna no celular */
+                row-gap: 60px;
+            }
+            .portfolio-item:nth-child(even) {
+                transform: translateY(0); /* Remove a defasagem no celular */
             }
             .project-title {
                 font-size: 1.5rem;
@@ -239,10 +243,10 @@
             <h1>PEDRO GALLEGO</h1>
         </header>
 
-        <!-- Galeria Editorial -->
+        <!-- Galeria Editorial de 2 Colunas -->
         <main class="editorial-gallery">
             
-            <!-- Projeto 01 -->
+            <!-- Projeto 01 (Esquerda, Topo) -->
             <a href="https://umpedrogallego.github.io/a360/acapulco.html" class="portfolio-item">
                 <div class="image-wrapper">
                     <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still1.jpg" alt="Acapulco">
@@ -253,7 +257,7 @@
                 </div>
             </a>
 
-            <!-- Projeto 02 -->
+            <!-- Projeto 02 (Direita, Deslocado para baixo) -->
             <a href="https://umpedrogallego.github.io/a360/vev.html" class="portfolio-item">
                 <div class="image-wrapper">
                     <img src="https://umpedrogallego.github.io/a360/img/vev1.jpg" alt="Vai e Vem">
@@ -264,7 +268,7 @@
                 </div>
             </a>
 
-            <!-- Projeto 03 -->
+            <!-- Projeto 03 (Esquerda, Abaixo do Projeto 01) -->
             <a href="https://umpedrogallego.github.io/a360/osalto.html" class="portfolio-item">
                 <div class="image-wrapper">
                     <img src="https://umpedrogallego.github.io/a360/img/osalto1.jpg" alt="O Salto">
@@ -275,14 +279,14 @@
                 </div>
             </a>
 
-            <!-- Projeto 04 -->
+            <!-- Projeto 04 (Direita, Deslocado para baixo) -->
             <a href="https://umpedrogallego.github.io/a360/fmf.html" class="portfolio-item">
                 <div class="image-wrapper">
                     <img src="https://umpedrogallego.github.io/a360/img/fmf2.jpg" alt="Futuro Movimento Futuro: Reprovado">
                 </div>
                 <div class="project-meta">
                     <div class="project-number">04</div>
-                    <div class="project-title">FUTURO MOVIMENTO FUTURO:<br>REPROVADO</div>
+                    <div class="project-title">FUTURO MOVIMENTO<br>FUTURO: REPROVADO</div>
                 </div>
             </a>
 
