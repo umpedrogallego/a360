@@ -8,13 +8,14 @@
     <!-- Fonte: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg-color: #3a3d3a;
             --text-color: #c8d0c8;
-            --link-color: #79e279;
+            --brand-color: #79e279;
+            --border-color: #555855;
             --font-family: 'Plus Jakarta Sans', sans-serif;
             --nav-bg: #1b1c1b;
             --nav-hover: #2d302d;
@@ -28,82 +29,108 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%; 
             max-width: none;
-            padding-bottom: 120px; /* Espaço para o menu fixo */
+            padding-bottom: 150px; /* Respiro extra para o nav fixo */
             padding-top: 50px; 
         }
 
-        /* Tipografia Base */
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 2px;
-            line-height: 1.1;
-        }
-
-        /* Cabeçalho do Topo */
+        /* --- CABEÇALHO --- */
         .top-header {
             width: 90%;
-            margin: 0 auto 80px auto;
+            margin: 0 auto 100px auto; /* Afasta o cabeçalho do conteúdo */
             display: flex;
             justify-content: space-between;
             align-items: baseline;
         }
 
-        /* Lista de Projetos (Alternada) */
-        .portfolio-list {
+        .top-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--brand-color); /* Mantém o peso e a cor da marca */
+            margin: 0;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        /* --- GRID EDITORIAL ASSIMÉTRICO --- */
+        .editorial-gallery {
             width: 90%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 80px; /* Espaçamento entre os projetos */
         }
 
-        .portfolio-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
+        .portfolio-item {
+            display: block;
             text-decoration: none;
             color: var(--text-color);
-            transition: opacity 0.3s ease;
+            margin-bottom: 120px; /* Grande respiro vertical entre obras */
         }
 
-        .portfolio-row:hover {
-            opacity: 0.7;
-            text-decoration: none;
+        /* Ritmo do Layout: Cada item ocupa um espaço diferente na tela */
+        .portfolio-item:nth-child(1) { width: 75%; margin-left: 0; }
+        .portfolio-item:nth-child(2) { width: 65%; margin-left: auto; }
+        .portfolio-item:nth-child(3) { width: 85%; margin: 0 auto; }
+        .portfolio-item:nth-child(4) { width: 70%; margin-left: 5%; }
+
+        /* Estrutura da Imagem com efeito Parallax/Scale */
+        .image-wrapper {
+            width: 100%;
+            overflow: hidden;
+            background-color: #222; /* Placeholder enquanto carrega */
         }
 
-        .portfolio-row img {
+        .image-wrapper img {
             width: 100%;
             height: auto;
             display: block;
-            /* Sombras removidas conforme solicitado */
+            transform: scale(1.01);
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        /* Lógica da inversão de lados (Padrão: Título Esquerda, Imagem Direita) */
-        .row-title {
-            order: 1;
-            
-        }
-        .row-image {
-            order: 2;
+        .portfolio-item:hover .image-wrapper img {
+            transform: scale(1.04);
         }
 
-        /* Inversão para as linhas pares (Imagem Esquerda, Título Direita) */
-        .portfolio-row.reverse .row-title {
-            order: 2;
-        }
-        .portfolio-row.reverse .row-image {
-            order: 1;
+        /* Ficha Técnica Minimalista (Abaixo da imagem) */
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            transition: opacity 0.3s ease;
         }
 
-        /* Menu Inferior Fixo */
+        .portfolio-item:hover .project-meta {
+            opacity: 0.8;
+        }
+
+        .project-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--brand-color);
+            letter-spacing: 1px;
+        }
+
+        .project-title {
+            font-size: 2.2rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            text-align: right;
+            max-width: 70%;
+        }
+
+
+        /* --- MENU INFERIOR FIXO --- */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -117,7 +144,7 @@
             box-sizing: border-box;
             z-index: 900;
             font-size: 0.8rem;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            border-top: 1px solid var(--nav-border);
         }
 
         .bottom-nav a {
@@ -163,7 +190,7 @@
             border-radius: 4px;
         }
 
-        /* Responsividade */
+        /* --- RESPONSIVIDADE --- */
         @media (max-width: 900px) {
             .bottom-nav {
                 flex-direction: column;
@@ -178,32 +205,26 @@
                 border-left: none;
                 padding: 6px 10px;
             }
+            
+            /* Normaliza o ritmo do grid para telas médias */
+            .portfolio-item:nth-child(n) { 
+                width: 100%; 
+                margin-left: 0; 
+                margin-bottom: 80px; 
+            }
         }
 
         @media (max-width: 768px) {
             .top-header {
                 flex-direction: column;
                 gap: 10px;
-                margin-bottom: 50px;
+                margin-bottom: 60px;
             }
-            h1 {
-                font-size: 2.2rem;
+            .top-header h1 {
+                font-size: 2rem;
             }
-            .portfolio-row {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            /* No celular, forçamos o título a vir sempre primeiro para uma leitura lógica */
-            .portfolio-row .row-title,
-            .portfolio-row.reverse .row-title {
-                order: 1;
-            }
-            .portfolio-row .row-image,
-            .portfolio-row.reverse .row-image {
-                order: 2;
-            }
-            .portfolio-list {
-                gap: 60px;
+            .project-title {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -212,56 +233,60 @@
 
     <div class="container">
         
-        <!-- Cabeçalho (PORTFÓLIO | PEDRO GALLEGO) -->
-        <div class="top-header" style="font-weight: 800; color:#79e279;">
+        <!-- Cabeçalho Principal -->
+        <header class="top-header">
             <h1>PORTFÓLIO</h1>
             <h1>PEDRO GALLEGO</h1>
-        </div>
+        </header>
 
-        <!-- Lista de Trabalhos Alternada -->
-        <div class="portfolio-list">
+        <!-- Galeria Editorial -->
+        <main class="editorial-gallery">
             
-            <!-- Linha 1: Título Esquerda | Imagem Direita -->
-            <a href="https://umpedrogallego.github.io/a360/acapulco.html" class="portfolio-row">
-                <div class="row-title">
-                    <h1 style="font-weight: 600;">ACAPULCO</h1>
+            <!-- Projeto 01 -->
+            <a href="https://umpedrogallego.github.io/a360/acapulco.html" class="portfolio-item">
+                <div class="image-wrapper">
+                    <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still1.jpg" alt="Acapulco">
                 </div>
-                <div class="row-image">
-                    <img src="https://umpedrogallego.github.io/a360/img/ACAPULCO_still2.jpg" alt="Acapulco">
-                </div>
-            </a>
-
-            <!-- Linha 2: Imagem Esquerda | Título Direita (Uso da classe 'reverse') -->
-            <a href="https://umpedrogallego.github.io/a360/vev.html" class="portfolio-row reverse">
-                <div class="row-title">
-                    <h1 style="font-weight: 600;">VAI E VEM</h1>
-                </div>
-                <div class="row-image">
-                    <img src="https://umpedrogallego.github.io/a360/img/vev01.jpg" alt="Vai e Vem">
+                <div class="project-meta">
+                    <div class="project-number">01</div>
+                    <div class="project-title">ACAPULCO</div>
                 </div>
             </a>
 
-            <!-- Linha 3: Título Esquerda | Imagem Direita -->
-            <a href="https://umpedrogallego.github.io/a360/osalto.html" class="portfolio-row">
-                <div class="row-title">
-                    <h1 style="font-weight: 600;">O SALTO</h1>
+            <!-- Projeto 02 -->
+            <a href="https://umpedrogallego.github.io/a360/vev.html" class="portfolio-item">
+                <div class="image-wrapper">
+                    <img src="https://umpedrogallego.github.io/a360/img/vev1.jpg" alt="Vai e Vem">
                 </div>
-                <div class="row-image">
-                    <img src="https://umpedrogallego.github.io/a360/img/osalto0.jpg" alt="O Salto">
-                </div>
-            </a>
-
-            <!-- Linha 4: Imagem Esquerda | Título Direita (Uso da classe 'reverse') -->
-            <a href="https://umpedrogallego.github.io/a360/fmf.html" class="portfolio-row reverse">
-                <div class="row-title">
-                    <h1 style="font-weight: 600;">FUTURO MOVIMENTO FUTURO:<br>REPROVADO</h1>
-                </div>
-                <div class="row-image">
-                    <img src="https://umpedrogallego.github.io/a360/img/fmf02.jpg" alt="Futuro Movimento Futuro: Reprovado">
+                <div class="project-meta">
+                    <div class="project-number">02</div>
+                    <div class="project-title">VAI E VEM</div>
                 </div>
             </a>
 
-        </div>
+            <!-- Projeto 03 -->
+            <a href="https://umpedrogallego.github.io/a360/osalto.html" class="portfolio-item">
+                <div class="image-wrapper">
+                    <img src="https://umpedrogallego.github.io/a360/img/osalto1.jpg" alt="O Salto">
+                </div>
+                <div class="project-meta">
+                    <div class="project-number">03</div>
+                    <div class="project-title">O SALTO</div>
+                </div>
+            </a>
+
+            <!-- Projeto 04 -->
+            <a href="https://umpedrogallego.github.io/a360/fmf.html" class="portfolio-item">
+                <div class="image-wrapper">
+                    <img src="https://umpedrogallego.github.io/a360/img/fmf2.jpg" alt="Futuro Movimento Futuro: Reprovado">
+                </div>
+                <div class="project-meta">
+                    <div class="project-number">04</div>
+                    <div class="project-title">FUTURO MOVIMENTO FUTURO:<br>REPROVADO</div>
+                </div>
+            </a>
+
+        </main>
     </div>
 
     <!-- Menu Rodapé -->
