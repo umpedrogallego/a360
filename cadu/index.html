@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizador de PDFs — A360</title>
+  <!-- PDF.js da Mozilla via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    :root {
+      --bg: #121214;
+      --surface: #1e1e24;
+      --border: #2e2e38;
+      --text: #e1e1e6;
+      --muted: #a8a8b3;
+      --primary: #8257e5;
+      --primary-hover: #9466ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Barra Superior */
+    header {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--border);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .page-indicator {
+      font-size: 13px;
+      color: var(--muted);
+      min-width: 80px;
+      text-align: center;
+    }
+
+    /* Container do PDF */
+    main {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 16px;
+      position: relative;
+    }
+
+    .canvas-wrapper {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #fff;
+      display: inline-block;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    /* Estado de carregamento */
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      color: var(--muted);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchDoc(0)">A360 — Apresentação VFX</button>
+      <button class="tab-btn" onclick="switchDoc(1)">DaVinci Resolve — Passo a Passo</button>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev-page" onclick="changePage(-1)">‹ Anterior</button>
+      <span class="page-indicator" id="page-num">1 / 1</span>
+      <button class="btn" id="next-page" onclick="changePage(1)">Próxima ›</button>
+      <button class="btn" onclick="zoom(-0.15)">−</button>
+      <button class="btn" onclick="zoom(0.15)">+</button>
+      <a id="download-link" class="btn" style="text-decoration: none;" target="_blank" download>Baixar</a>
+    </div>
+  </header>
+
+  <main id="viewport">
+    <div id="loading">Carregando documento...</div>
+    <div class="canvas-wrapper">
+      <canvas id="pdf-render"></canvas>
+    </div>
+  </main>
+
+  <script>
+    // Configura o worker oficial do PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    // Lista de documentos usando HTTPS para evitar Mixed Content
+    const baseUrl = 'https://umpedrogallego.github.io/a360/cadu/';
+    const documents = [
+      {
+        title: 'A360 - Apresentação',
+        url: baseUrl + encodeURIComponent('A360 - Apresentação para aulas - Pós-produção VFX e Novas Tecnologias e DVR.pdf')
+      },
+      {
+        title: 'DaVinci Resolve',
+        url: baseUrl + encodeURIComponent('LAB_DaVinciResolve_PassoAPasso_Revisado.pdf')
+      }
+    ];
+
+    let currentDocIndex = 0;
+    let pdfDoc = null;
+    let pageNum = 1;
+    let scale = 1.3;
+    let isRendering = false;
+    let pageNumPending = null;
+
+    const canvas = document.getElementById('pdf-render');
+    const ctx = canvas.getContext('2d');
+    const loadingEl = document.getElementById('loading');
+    const pageNumEl = document.getElementById('page-num');
+    const downloadEl = document.getElementById('download-link');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+
+    function renderPage(num) {
+      isRendering = true;
+      pdfDoc.getPage(num).then(page => {
+        const viewport = page.getViewport({ scale: scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+
+        const renderTask = page.render(renderContext);
+
+        renderTask.promise.then(() => {
+          isRendering = false;
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+
+      pageNumEl.textContent = `${num} / ${pdfDoc.numPages}`;
+      document.getElementById('prev-page').disabled = (num <= 1);
+      document.getElementById('next-page').disabled = (num >= pdfDoc.numPages);
+    }
+
+    function queueRenderPage(num) {
+      if (isRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+
+    function loadDocument(index) {
+      loadingEl.style.display = 'block';
+      canvas.style.display = 'none';
+
+      const doc = documents[index];
+      downloadEl.href = doc.url;
+
+      pdfjsLib.getDocument(doc.url).promise.then(pdf => {
+        pdfDoc = pdf;
+        pageNum = 1;
+        loadingEl.style.display = 'none';
+        canvas.style.display = 'block';
+        renderPage(pageNum);
+      }).catch(err => {
+        loadingEl.textContent = 'Erro ao carregar o PDF. Verifique se as permissões de CORS permitem o acesso direto aos arquivos.';
+        console.error(err);
+      });
+    }
+
+    function switchDoc(index) {
+      if (currentDocIndex === index) return;
+      currentDocIndex = index;
+
+      tabButtons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+
+      loadDocument(index);
+    }
+
+    function changePage(delta) {
+      if (!pdfDoc) return;
+      if (pageNum + delta >= 1 && pageNum + delta <= pdfDoc.numPages) {
+        pageNum += delta;
+        queueRenderPage(pageNum);
+      }
+    }
+
+    function zoom(delta) {
+      scale = Math.min(Math.max(scale + delta, 0.6), 2.8);
+      queueRenderPage(pageNum);
+    }
+
+    // Navegação via teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') changePage(1);
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') changePage(-1);
+    });
+
+    // Início imediato
+    loadDocument(currentDocIndex);
+  </script>
+</body>
+</html>
